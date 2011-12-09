@@ -1,3 +1,20 @@
+/***
+ * Copyright (C) 2011  kurt.mbanje peirr solutions
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @author kurt.mbanje ckurtm at gmail.com
+ *
+ */
+
 package com.peirr.jrestserver.reactors;
 
 import java.lang.reflect.Method;
@@ -9,7 +26,7 @@ import com.peirr.jrestserver.api.RESTmethod;
 
 /**
  * Validates a request to note if we should proceed with processing
- * @author kurt
+ * @author kurt.mbanje ckurtm at gmail dot com
  *
  */
 public class RequestHelper {
@@ -41,7 +58,10 @@ public class RequestHelper {
 	}
 
 	
-	
+	/**
+	 * validates the request to make sure we can handle the supplied parameters
+	 * @param params
+	 */
 	private void validateRequest(HashMap<String,String> params){
 		System.out.println("validateRequest: " + params);
 		valid   =  false;
@@ -156,7 +176,11 @@ public class RequestHelper {
 	}
 
 
-
+    /**
+     * Checks to see if we have an implementation of the requested method
+     * @param s
+     * @return
+     */
 	public boolean validMethod(String s) {
 		System.out.println("valid method: ["+s+"]");
 		boolean v = false;
@@ -167,7 +191,6 @@ public class RequestHelper {
 				return true;
 			}
 		}
-
 		return v;
 	}
 

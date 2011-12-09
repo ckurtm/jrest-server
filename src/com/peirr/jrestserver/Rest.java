@@ -1,3 +1,20 @@
+/***
+ * Copyright (C) 2011  kurt.mbanje peirr solutions
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @author kurt.mbanje ckurtm at gmail.com
+ *
+ */
+
 package com.peirr.jrestserver;
 
 import java.io.IOException;
@@ -16,7 +33,12 @@ import com.peirr.jrestserver.api.RESTmethod;
 import com.peirr.jrestserver.reactors.RequestHelper;
 import com.peirr.jrestserver.reactors.ResponseReactor;
 
-
+/**
+ * This is the main entry point servlet for all REST requests to this application.
+ * you dont need to change anything here unless you have some unique requirement.
+ * @author kurt.mbanje ckurtm at gmail dot com
+ *
+ */
 public class Rest extends HttpServlet {
 	private static final long serialVersionUID = 5391547924121066491L;
 	ResponseReactor rfact = new ResponseReactor();
