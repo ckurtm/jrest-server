@@ -11,17 +11,17 @@ import com.peirr.jrestserver.reactors.ResponseReactor;
 /**
  * 
  * @author ckurtm at gmail dot com
- * This has all method implementations for {@link RESTplug}
+ * This has all method implementations for {@link RESTinterface}
  */
-public class RESTimpl implements RESTplug {
-	private ResponseReactor rfactory;
+public class RESTmethod implements RESTinterface {
+	private ResponseReactor reactor;
 	private static final char[] symbols = new char[36];
 	private final Random random = new Random();
 	private char[] buf;
 
-	public RESTimpl() throws SQLException{
+	public RESTmethod() throws SQLException{
 		DriverManager.registerDriver(new AppEngineDriver());
-		rfactory = new ResponseReactor();
+		reactor = new ResponseReactor();
 		for (int idx = 0; idx < 10; ++idx)
 			symbols[idx] = (char) ('0' + idx);
 		for (int idx = 10; idx < 36; ++idx)
@@ -45,7 +45,7 @@ public class RESTimpl implements RESTplug {
 
 	@Override
 	public String say(HashMap<String, String> args) {
-		return rfactory.create(null,"say hello : " + args.get("name") + " surname: " + args.get("surname"));
+		return reactor.create(null,"say hello : " + args.get("name") + " surname: " + args.get("surname"));
 	}
 
 

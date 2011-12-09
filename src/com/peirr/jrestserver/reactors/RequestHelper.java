@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.peirr.jrestserver.Core;
-import com.peirr.jrestserver.api.RESTimpl;
+import com.peirr.jrestserver.api.RESTmethod;
 
 /**
  * Validates a request to note if we should proceed with processing
@@ -22,7 +22,7 @@ public class RequestHelper {
 	private Method                  method;
 
 	private static String   PARAM_VERSION  = "vs";
-	private static String   PARAM_METHOD   = "mt";
+	private static String   PARAM_METHOD   = "m";
 	private static String   PARAM_OS       = "os";
 
 	public RequestHelper(String s){
@@ -47,10 +47,6 @@ public class RequestHelper {
 		valid   =  false;
 		message = Core.UNKNOWN_ERROR;
 			if((params != null) && (params.size() > 0)){
-				//has version?
-				if(hasVersionParameter(params)){
-					//has os?
-					if(hasOSParameter(params)){
 						//has method
 						if(hasMethodParameter(params)){
 							if(validMethod(params.get(PARAM_METHOD))){
@@ -64,16 +60,8 @@ public class RequestHelper {
 						}else{
 							message = Core.INVALID_REQUEST + " [method missing]";
 							valid   =  false; 
-						}
-					}else{
-						message = Core.INVALID_REQUEST + " [os missing]";
-						valid   =  false; 
-					}
-				}else{
-					message = Core.INVALID_REQUEST + " [version missing]";
-					valid   =  false; 
-				}
-
+						}					
+				
 			}else{
 				message = Core.INVALID_PARAMS + " [uneven]";
 			}
@@ -113,10 +101,6 @@ public class RequestHelper {
 					System.out.println((sa[i*2]) + " -> " + sa[(i*2)+1]);
 					params.put(sa[i*2],sa[(i*2)+1]);             	
 				}
-				//has version?
-				if(hasVersionParameter(params)){
-					//has os?
-					if(hasOSParameter(params)){
 						//has method
 						if(hasMethodParameter(params)){
 							if(validMethod(params.get(PARAM_METHOD))){
@@ -130,15 +114,6 @@ public class RequestHelper {
 							message = Core.INVALID_REQUEST + " [method missing]";
 							valid   =  false; 
 						}
-					}else{
-						message = Core.INVALID_REQUEST + " [os missing]";
-						valid   =  false; 
-					}
-				}else{
-					message = Core.INVALID_REQUEST + " [version missing]";
-					valid   =  false; 
-				}
-
 			}else{
 				message = Core.INVALID_PARAMS + " [uneven]";
 			}
@@ -148,11 +123,11 @@ public class RequestHelper {
 		}		
 	}
 
-	private boolean hasVersionParameter(HashMap<String, String> params){
+	boolean hasVersionParameter(HashMap<String, String> params){
 		return params.containsKey(PARAM_VERSION);
 	}
 
-	private boolean hasOSParameter(HashMap<String, String> params){
+	boolean hasOSParameter(HashMap<String, String> params){
 		return params.containsKey(PARAM_OS);
 	}
 
@@ -185,7 +160,7 @@ public class RequestHelper {
 	public boolean validMethod(String s) {
 		System.out.println("valid method: ["+s+"]");
 		boolean v = false;
-		Method[] ms = RESTimpl.class.getDeclaredMethods();
+		Method[] ms = RESTmethod.class.getDeclaredMethods();
 		for(Method md:ms){
 			if(md.getName().toLowerCase().equals(s.toLowerCase())){
 				method = md;

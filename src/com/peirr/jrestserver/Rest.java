@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.peirr.jrestserver.api.RESTimpl;
+import com.peirr.jrestserver.api.RESTmethod;
 import com.peirr.jrestserver.reactors.RequestHelper;
 import com.peirr.jrestserver.reactors.ResponseReactor;
 
@@ -20,7 +20,7 @@ import com.peirr.jrestserver.reactors.ResponseReactor;
 public class Rest extends HttpServlet {
 	private static final long serialVersionUID = 5391547924121066491L;
 	ResponseReactor rfact = new ResponseReactor();
-	RESTimpl ffact;
+	RESTmethod ffact;
 
 	@Override
 	public void init() throws ServletException {
@@ -35,7 +35,7 @@ public class Rest extends HttpServlet {
 		RequestHelper request = new RequestHelper(req.getPathInfo());
 		if(request.isValid()){
 			try {
-				RESTimpl fc = new RESTimpl();
+				RESTmethod fc = new RESTmethod();
 				Class<?> c = Class.forName(fc.getClass().getName());
 				Object t = c.newInstance();			
 				request.getMethod().setAccessible(true);
@@ -78,7 +78,7 @@ public class Rest extends HttpServlet {
 //		System.out.println("params: \n" + params);
 		if(request.isValid()){
 			try {
-				RESTimpl fc = new RESTimpl();
+				RESTmethod fc = new RESTmethod();
 				Class<?> c = Class.forName(fc.getClass().getName());
 				Object t = c.newInstance();			
 				request.getMethod().setAccessible(true);

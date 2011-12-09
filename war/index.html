@@ -1,27 +1,89 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<!-- The HTML 4.01 Transitional DOCTYPE declaration-->
-<!-- above set at the top of the file will set     -->
-<!-- the browser's rendering engine into           -->
-<!-- "Quirks Mode". Replacing this declaration     -->
-<!-- with a "Standards Mode" doctype is supported, -->
-<!-- but may lead to some differences in layout.   -->
+#summary How to use jrest-server.
+<g:plusone></g:plusone>[http://code.google.com/appengine/images/appengine-noborder-120x30.gif]
+= Requirements =
+This currently depends on the following:
+  * Google Appengine for Java [http://code.google.com/appengine/docs/java/overview.html]
+  * Google Cloud SQL for Java [https://code.google.com/apis/sql/docs/developers_guide_java.html]
+  * Google JSON [http://code.google.com/p/google-gson/] this is already linked in so all you need to do is add the jar to your build path. you can find it in the WAR/LIB directory of the project.
 
-<html>
-  <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <title>Hello App Engine</title>
-  </head>
 
-  <body>
-    <h1>Hello App Engine!</h1>
-	
-    <table>
-      <tr>
-        <td colspan="2" style="font-weight:bold;">Available Servlets:</td>        
-      </tr>
-      <tr>
-        <td><a href="jrestserver">JRestServer</a></td>
-      </tr>
-    </table>
-  </body>
-</html>
+___
+
+= Installation =
+
+Add your content here.  Format your content with:
+  # Check out the project: `svn checkout http://jrest-server.googlecode.com/svn/trunk/ jrest-server-read-only`
+  # Setup your project to link to your database as explained here: [https://code.google.com/apis/sql/docs/developers_guide_java.html]
+
+
+= Usage =
+You will only need to deal with 2 files:
+  * RESTinterface - create interfaces for your methods here
+  * RESTmethods   - implement the methods here
+  * To access your new methods go to [http://localhost:8888/rest/m/<methodname>/param1key/param1val/param2key/param2value]
+  * You can also access results via *POST* just post the params to [http://localhost:8888/rest/]
+
+= Example =
+I have a table *versions* in my database with 2 fields *_version_*,*_id_*.
+Currently it has the following data:
+||*id*||*version*||
+||4||Cupcake||
+||5||Donut||
+||6||Eclair||
+||7||Froyo||
+||8||GingerBread||
+||9||HoneyComb||
+||10||Ice Cream Sandwich||
+
+I have a method that gets all versions >= supplied *_id_* from the table as below:
+<code>
+  java.sql.ResultSet getversions(long id){
+    //.... implement retrieval here
+    return //ResultSet
+  }
+</code>
+
+
+In order to implement this within jrest-server:
+  # Add method definition to *_com.peirr.jrestserver.api.RESTinterface_*
+  <code>
+  public String versions(HashMap<String, String> args);
+    </code>
+    Note that all methods should return String,methods take a map of    key/value pairs. In this case you will pass a _*java.util.HashMap*_ like:
+  <code>
+  HashMap<String,String> params = new HashMap<String,String>();
+ params.put("id","3");
+   </code>
+  * Implement the actual method in *_com.peirr.jrestserver.api.RESTmethod_*
+ <code>
+  public String versions(HashMap<String, String> args){
+     ResultSet rs = //get resultset from db query here
+     return reactor.create(rs,"simple description of results here"));
+   }
+ </code>
+
+  where *reactor* is an instance variable of the *RESTmethod* class. Note that you pass the result set of the db query to the _create_ method of reactor class.
+
+  * Access this new method on your server - e.g. localhost - as follows:
+    [http://localhost:8888/rest/m/versions/id/l1/]
+    this will return the following json for the above table contents:
+    <code language="json">
+{
+"response": {
+"description": "some description here",
+"stamp": "1323418334",
+"total": 0,
+"responsetype": "DATA"
+},
+"data": [
+         {"id":"4","version":"Cupcake"},
+         {"id":"5","version":"Donut"},
+         {"id":"6","version":"Eclair"},
+         {"id":"7","version":"Froyo"},
+         {"id":"8","version":"GingerBread"},
+         {"id":"9","version":"HoneyComb"},
+         {"id":"10","version":"Ice Cream Sandwich"}
+        ]
+}
+    </code>
+  * You can also POST to the server just by posting you key value pair parameters to [http://localhost:8888/rest/] 
