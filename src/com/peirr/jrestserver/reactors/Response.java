@@ -76,6 +76,25 @@ public class Response {
 	public String toString() {
 		return "Response [description=" + description +	", stamp=" + stamp + ", total=" + total + ", responsetype=" + responsetype + "]";
 	}
+	
+	
+	public String toXML(){
+		StringBuffer s = new StringBuffer("<response>\n");
+		s.append("  <description>");
+		s.append(getDescription() + "");
+		s.append("</description>\n");
+		s.append("  <stamp>");
+		s.append(getStamp() + "");
+		s.append("</stamp>\n");
+		s.append("  <total>");
+		s.append( getTotal() + "");
+		s.append("</total>\n");
+		s.append("  <responsetype>");
+		s.append(getResponsetype() + "");
+		s.append("</responsetype>\n");		
+		s.append("</response>"); 	
+		return s.toString();
+	}
     
     /**
      * Creates an info response with the given message
@@ -83,7 +102,9 @@ public class Response {
      * @return
      */
     public static Response createInfoResponse(String m){
-    	return  new Response(m, String.valueOf(dateToUnixTimeStamp(new Date())),0, ResponseType.INFO);
+    	Response r =  new Response(m, String.valueOf(dateToUnixTimeStamp(new Date())),0, ResponseType.INFO);
+    	//System.out.println("INFO XML RESPONSE: " + r.toXML());
+    	return r;
     }
     
     
@@ -93,7 +114,10 @@ public class Response {
      * @return
      */
     public static Response createDataResponse(String m,int total){
-    	return  new Response(m, String.valueOf(dateToUnixTimeStamp(new Date())),total, ResponseType.DATA);
+    	Response r =  new Response(m, String.valueOf(dateToUnixTimeStamp(new Date())),total, ResponseType.DATA);
+    	System.out.println("DATA XML RESPONSE: " + r.toXML());
+
+    	return r;
     }
  
     /**

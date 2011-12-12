@@ -38,15 +38,15 @@ public class RequestHelper {
 	private String    				message;
 	private Method                  method;
 
-	private static String   PARAM_VERSION  = "vs";
-	private static String   PARAM_METHOD   = "m";
-	private static String   PARAM_OS       = "os";
+	private  String   PARAM_VERSION  = "vs";
+	private  String   PARAM_METHOD   = "m";
+	private  String   PARAM_OS       = "os";
 
 	public RequestHelper(String s){
 		path = s;
 		validateRequest();
 	}
-	
+
 	public RequestHelper(HashMap<String, String> params){
 		this.params = params;
 		validateRequest(params);
@@ -57,7 +57,7 @@ public class RequestHelper {
 		return "RequestHelper [valid=" + valid + ", params=" + params + ", path=" + path + "]";
 	}
 
-	
+
 	/**
 	 * validates the request to make sure we can handle the supplied parameters
 	 * @param params
@@ -66,34 +66,33 @@ public class RequestHelper {
 		System.out.println("validateRequest: " + params);
 		valid   =  false;
 		message = Core.UNKNOWN_ERROR;
-			if((params != null) && (params.size() > 0)){
-						//has method
-						if(hasMethodParameter(params)){
-							if(validMethod(params.get(PARAM_METHOD))){
-								System.out.println("i got a valid method");
-								message = Core.VALID_PARAMS;
-								valid   =  true;
-							}else{
-								message = Core.INVALID_REQUEST + " [unknown method]";
-								valid   =  false;
-							}
-						}else{
-							message = Core.INVALID_REQUEST + " [method missing]";
-							valid   =  false; 
-						}					
-				
-			}else{
-				message = Core.INVALID_PARAMS + " [uneven]";
-			}
-			
-	}
+		if((params != null) && (params.size() > 0)){
 	
+
+			//has method
+			if(hasMethodParameter(params)){
+				if(validMethod(params.get(PARAM_METHOD))){
+					System.out.println("i got a valid method");
+					message = Core.VALID_PARAMS;
+					valid   =  true;
+				}else{
+					message = Core.INVALID_REQUEST + " [unknown method]";
+					valid   =  false;
+				}
+			}else{
+				message = Core.INVALID_REQUEST + " [method missing]";
+				valid   =  false; 
+			}					
+
+		}else{
+			message = Core.INVALID_PARAMS + " [uneven]";
+		}
+
+	}
+
 	/**
 	 * Validate the request using the following rules:<br/>
 	 *  - should have method param (m)<br/>
-	 *  - should have even parameters
-	 *  - should have os param
-	 *  - should have version param
 	 */
 	private void validateRequest(){
 		params.clear();
@@ -101,7 +100,7 @@ public class RequestHelper {
 		message = Core.UNKNOWN_ERROR;
 		String[] s  = new String[0];
 		if(path != null){
-//			System.out.println("LENGTH: " + path.split("/").length);
+			//			System.out.println("LENGTH: " + path.split("/").length);
 			s = path.split("/");
 		}
 
@@ -121,19 +120,22 @@ public class RequestHelper {
 					System.out.println((sa[i*2]) + " -> " + sa[(i*2)+1]);
 					params.put(sa[i*2],sa[(i*2)+1]);             	
 				}
-						//has method
-						if(hasMethodParameter(params)){
-							if(validMethod(params.get(PARAM_METHOD))){
-								message = Core.VALID_PARAMS;
-								valid   =  true;
-							}else{
-								message = Core.INVALID_REQUEST + " [unknown method]";
-								valid   =  false;
-							}
-						}else{
-							message = Core.INVALID_REQUEST + " [method missing]";
-							valid   =  false; 
-						}
+
+
+
+				//has method
+				if(hasMethodParameter(params)){
+					if(validMethod(params.get(PARAM_METHOD))){
+						message = Core.VALID_PARAMS;
+						valid   =  true;
+					}else{
+						message = Core.INVALID_REQUEST + " [unknown method]";
+						valid   =  false;
+					}
+				}else{
+					message = Core.INVALID_REQUEST + " [method missing]";
+					valid   =  false; 
+				}
 			}else{
 				message = Core.INVALID_PARAMS + " [uneven]";
 			}
@@ -154,6 +156,7 @@ public class RequestHelper {
 	private boolean hasMethodParameter(HashMap<String, String> params){
 		return params.containsKey(PARAM_METHOD);
 	}
+
 
 	private boolean hasEvenParameters(String[] s){
 		boolean f = false;
@@ -176,11 +179,11 @@ public class RequestHelper {
 	}
 
 
-    /**
-     * Checks to see if we have an implementation of the requested method
-     * @param s
-     * @return
-     */
+	/**
+	 * Checks to see if we have an implementation of the requested method
+	 * @param s
+	 * @return
+	 */
 	public boolean validMethod(String s) {
 		System.out.println("valid method: ["+s+"]");
 		boolean v = false;
